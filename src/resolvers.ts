@@ -9,4 +9,14 @@ export const resolvers = {
 		authors: () => db.authors,
 		author: (_, { id }) => db.authors.find((author) => author.id === id),
 	},
+	Game: {
+		reviews: (game) => db.reviews.filter((review) => review.gameId === game.id),
+	},
+	Review: {
+		game: (review) => db.games.find((game) => game.id === review.gameId),
+		author: (review) => db.authors.find((author) => author.id === review.authorId),
+	},
+	Author: {
+		reviews: (author) => db.reviews.filter((review) => review.authorId === author.id),
+	},
 };
