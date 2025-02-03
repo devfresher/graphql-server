@@ -19,4 +19,31 @@ export const resolvers = {
 	Author: {
 		reviews: (author) => db.reviews.filter((review) => review.authorId === author.id),
 	},
+	Mutation: {
+		addGame: (_, { game }) => {
+			const newGame = {
+				id: String(parseInt(db.games[db.games.length - 1].id) + 1),
+				...game,
+			};
+			db.games.push(newGame);
+			return newGame;
+		},
+		deleteGame: (_, { id }) => {
+			const gameIndex = db.games.findIndex((game) => game.id === id);
+			if (gameIndex === -1) {
+				throw new Error(`Game with id ${id} not found`);
+			}
+			const [deletedGame] = db.games.splice(gameIndex, 1);
+			return deletedGame;
+		},
+		addReview: (_, { gameId, review }) => {
+			const newReview = {
+				id: String(parseInt(db.reviews[db.reviews.length - 1].id) + 1),
+				gameId,
+				...review,
+			};
+			db.reviews.push(newReview);
+			return newReview;
+		},
+	},
 };
