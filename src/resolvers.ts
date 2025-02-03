@@ -28,6 +28,15 @@ export const resolvers = {
 			db.games.push(newGame);
 			return newGame;
 		},
+		updateGame: (_, { id, game }) => {
+			const gameIndex = db.games.findIndex((game) => game.id === id);
+			if (gameIndex === -1) {
+				throw new Error(`Game with id ${id} not found`);
+			}
+			const updatedGame = { ...db.games[gameIndex], ...game };
+			db.games[gameIndex] = updatedGame;
+			return updatedGame;
+		},
 		deleteGame: (_, { id }) => {
 			const gameIndex = db.games.findIndex((game) => game.id === id);
 			if (gameIndex === -1) {
